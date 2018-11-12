@@ -7,19 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7EF82E6DB8AD3F736EC9E202 /* Pods_HyruleLink.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCC0CC635A26A3F55EC06D9F /* Pods_HyruleLink.framework */; };
 		E2BE4F27219A003000613695 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BE4F26219A003000613695 /* AppDelegate.swift */; };
 		E2BE4F29219A003000613695 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BE4F28219A003000613695 /* ViewController.swift */; };
 		E2BE4F2E219A003200613695 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2BE4F2D219A003200613695 /* Assets.xcassets */; };
 		E2BE4F31219A003200613695 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2BE4F2F219A003200613695 /* LaunchScreen.storyboard */; };
+		E2BE4F4B219A05E700613695 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BE4F4A219A05E700613695 /* TableViewCell.swift */; };
+		E2BE4F4D219A0A0200613695 /* Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BE4F4C219A0A0200613695 /* Link.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		11030407A6E85AACC7BB03C1 /* Pods-HyruleLink.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HyruleLink.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HyruleLink/Pods-HyruleLink.debug.xcconfig"; sourceTree = "<group>"; };
+		9DBEFEE967192CE2A8D65E94 /* Pods-HyruleLink.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HyruleLink.release.xcconfig"; path = "Pods/Target Support Files/Pods-HyruleLink/Pods-HyruleLink.release.xcconfig"; sourceTree = "<group>"; };
+		BCC0CC635A26A3F55EC06D9F /* Pods_HyruleLink.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HyruleLink.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2BE4F23219A003000613695 /* HyruleLink.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HyruleLink.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2BE4F26219A003000613695 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E2BE4F28219A003000613695 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E2BE4F2D219A003200613695 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E2BE4F30219A003200613695 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E2BE4F32219A003200613695 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E2BE4F4A219A05E700613695 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		E2BE4F4C219A0A0200613695 /* Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Link.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,17 +35,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7EF82E6DB8AD3F736EC9E202 /* Pods_HyruleLink.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BD18A98B916A3EABACEC6BDE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BCC0CC635A26A3F55EC06D9F /* Pods_HyruleLink.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E2BE4F1A219A003000613695 = {
 			isa = PBXGroup;
 			children = (
 				E2BE4F25219A003000613695 /* HyruleLink */,
 				E2BE4F24219A003000613695 /* Products */,
+				FE85D643D618A7DFEEDEB225 /* Pods */,
+				BD18A98B916A3EABACEC6BDE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -52,13 +71,24 @@
 		E2BE4F25219A003000613695 /* HyruleLink */ = {
 			isa = PBXGroup;
 			children = (
+				E2BE4F4A219A05E700613695 /* TableViewCell.swift */,
 				E2BE4F26219A003000613695 /* AppDelegate.swift */,
 				E2BE4F28219A003000613695 /* ViewController.swift */,
 				E2BE4F2D219A003200613695 /* Assets.xcassets */,
 				E2BE4F2F219A003200613695 /* LaunchScreen.storyboard */,
 				E2BE4F32219A003200613695 /* Info.plist */,
+				E2BE4F4C219A0A0200613695 /* Link.swift */,
 			);
 			path = HyruleLink;
+			sourceTree = "<group>";
+		};
+		FE85D643D618A7DFEEDEB225 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				11030407A6E85AACC7BB03C1 /* Pods-HyruleLink.debug.xcconfig */,
+				9DBEFEE967192CE2A8D65E94 /* Pods-HyruleLink.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -68,9 +98,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E2BE4F35219A003200613695 /* Build configuration list for PBXNativeTarget "HyruleLink" */;
 			buildPhases = (
+				E025541BF712798A20724748 /* [CP] Check Pods Manifest.lock */,
 				E2BE4F1F219A003000613695 /* Sources */,
 				E2BE4F20219A003000613695 /* Frameworks */,
 				E2BE4F21219A003000613695 /* Resources */,
+				D78449A9257FB714E652ADA5 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -126,13 +158,70 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		D78449A9257FB714E652ADA5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-HyruleLink/Pods-HyruleLink-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
+				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxRealm/RxRealm.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRealm.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HyruleLink/Pods-HyruleLink-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E025541BF712798A20724748 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HyruleLink-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		E2BE4F1F219A003000613695 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2BE4F4B219A05E700613695 /* TableViewCell.swift in Sources */,
 				E2BE4F29219A003000613695 /* ViewController.swift in Sources */,
 				E2BE4F27219A003000613695 /* AppDelegate.swift in Sources */,
+				E2BE4F4D219A0A0200613695 /* Link.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,6 +357,7 @@
 		};
 		E2BE4F36219A003200613695 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 11030407A6E85AACC7BB03C1 /* Pods-HyruleLink.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -286,6 +376,7 @@
 		};
 		E2BE4F37219A003200613695 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9DBEFEE967192CE2A8D65E94 /* Pods-HyruleLink.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
