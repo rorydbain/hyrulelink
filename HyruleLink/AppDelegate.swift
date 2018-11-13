@@ -11,6 +11,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         nav.navigationBar.prefersLargeTitles = true
         window?.rootViewController = nav
         window?.makeKeyAndVisible()
+        
+        LinkPrefiller.prefillLinks()
         return true
     }
 

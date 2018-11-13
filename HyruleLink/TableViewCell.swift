@@ -25,10 +25,11 @@ class TableViewCell: UITableViewCell {
     }()
     
     private let useLastParamsButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .roundedRect)
         button.backgroundColor = .lightLightGray
-        button.layer.cornerRadius = 4
         button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.numberOfLines = 0
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 11)
         return button
     }()
     
@@ -63,9 +64,17 @@ class TableViewCell: UITableViewCell {
             stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
             ])
         
+        useLastParamsButton.translatesAutoresizingMaskIntoConstraints = false
+        useWithNewParamsButton.translatesAutoresizingMaskIntoConstraints = false
+        
         stackView.addArrangedSubview(pathLabel)
         stackView.addArrangedSubview(useLastParamsButton)
         stackView.addArrangedSubview(useWithNewParamsButton)
+        
+        NSLayoutConstraint.activate([useLastParamsButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 40),
+                                     useLastParamsButton.widthAnchor.constraint(equalTo: stackView.widthAnchor)])
+        NSLayoutConstraint.activate([useWithNewParamsButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 40),
+                                     useWithNewParamsButton.widthAnchor.constraint(equalTo: stackView.widthAnchor)])
         
         useLastParamsButton.rx.tap.subscribe(onNext: { [weak self] in
             guard let strongSelf = self else { return }
@@ -85,9 +94,10 @@ class TableViewCell: UITableViewCell {
     func didUpdateLink() {
         pathLabel.text = link.path
         
-        if link.lastUsed.value != nil && !link.lastParameters.isEmpty {
-            useLastParamsButton.setTitle("Use Last - \(link.lastParameters.joined(separator: ", "))", for: .normal)
+        if !link.lastParameters.isEmpty {
+            useLastParamsButton.setTitle("Use Last - \(link.lastParameters.map { "\($0.key): \($0.value)" }.joined(separator: ", "))", for: .normal)
             useLastParamsButton.isHidden = false
+            useLastParamsButton.sizeToFit()
         } else {
             useLastParamsButton.isHidden = true
         }

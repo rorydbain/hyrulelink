@@ -80,20 +80,28 @@ class ViewController: UITableViewController, TableViewCellDelegate {
     }
     
     func didTapUseNew(link: Link) {
-        link.populateParameters(presentingAlertFrom: self) { [weak self] fullPath in
-            let urlString = "https://www.fanduel.com\(fullPath)"
-            if let url = URL(string: urlString) {
-                UIApplication.shared.open(url, options: [:], completionHandler: { _ in
-                    link.didUse(withParams: [])
-                })
-            } else {
-                self?.showError(title: "Failed to make url", message: "Could not make url with text '\(urlString)'")
-            }
+        link.populateParameters(presentingAlertFrom: self) { [weak self] linkInfo in
+            self?.open(path: linkInfo.fullPath, completion: {
+                link.didUse(withParams: linkInfo.replacements, fullPath: linkInfo.fullPath)
+            })
         }
     }
     
     func didTapUseLast(link: Link) {
-        
+        self.open(path: link.lastBuiltPath) {
+            link.didUse(withParams: nil, fullPath: link.lastBuiltPath)
+        }
+    }
+    
+    private func open(path: String, completion: @escaping () -> Void) {
+        let urlString = "https://www.fanduel.com\(path)"
+        if let url = URL(string: urlString) {
+            UIApplication.shared.open(url, options: [:], completionHandler: { _ in
+                completion()
+            })
+        } else {
+            showError(title: "Failed to make url", message: "Could not make url with text '\(urlString)'")
+        }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

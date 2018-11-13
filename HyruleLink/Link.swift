@@ -1,11 +1,17 @@
 import RealmSwift
 import RxSwift
 
+class LinkParam: Object {
+    @objc dynamic var key = ""
+    @objc dynamic var value = ""
+}
+
 class Link: Object {
     @objc dynamic var path = ""
     @objc dynamic var dateAdded = Date()
-    var lastUsed = RealmOptional<Double>()
-    var lastParameters = List<String>()
+    @objc dynamic var lastUsed = Date()
+    @objc dynamic var lastBuiltPath = ""
+    var lastParameters = List<LinkParam>()
     
     private let disposeBag = DisposeBag()
     
@@ -17,19 +23,27 @@ class Link: Object {
             .sorted(by: descriptors)
     }
     
-    func didUse(withParams params: [String]) {
+    func didUse(withParams params: [String: String]?, fullPath: String) {
         let realm = try! Realm()
         try! realm.write { [weak self] in
-            self?.lastUsed.value = Date().timeIntervalSince1970
+            self?.lastUsed = Date()
+            self?.lastBuiltPath = fullPath
             
-            self?.lastParameters.removeAll()
-            params.forEach({ self?.lastParameters.append($0) })
+            if let params = params {
+                self?.lastParameters.removeAll()
+                params.forEach { (key, value) in
+                    let lp = LinkParam()
+                    lp.key = key
+                    lp.value = value
+                    self?.lastParameters.append(lp)
+                }
+            }
         }
     }
     
     
     // weird but hey ho
-    func populateParameters(presentingAlertFrom viewController: UIViewController, completed: @escaping (String) -> Void) {
+    func populateParameters(presentingAlertFrom viewController: UIViewController, completed: @escaping (LinkInfo) -> Void) {
         let paramRegex = "\\$\\{(.*?)\\}" // e.g. /pickem/${tournamentId}
         let matches = try! NSRegularExpression(pattern: paramRegex).matches(in: path, options: [], range: NSRange(path.startIndex..., in: path))
         
@@ -55,11 +69,12 @@ class Link: Object {
         
     }
     
-    private func replaceChunks(forValues matchesToUserInput: [(NSTextCheckingResult, String)]) -> String {
-        guard !matchesToUserInput.isEmpty else { return path }
+    private func replaceChunks(forValues matchesToUserInput: [(NSTextCheckingResult, String)]) -> LinkInfo {
+        guard !matchesToUserInput.isEmpty else { return LinkInfo(fullPath: path, replacements: [:]) }
         
         var output = ""
         var previousMatch: NSTextCheckingResult?
+        var replacements = [String: String]()
         for (i, args) in matchesToUserInput.enumerated() {
             let (match, replacement) = args
             let currentMatchRange = Range(match.range, in: path)!
@@ -73,6 +88,8 @@ class Link: Object {
                 output.append(String(chunk))
             }
             
+            let currentKey = String(path[Range(match.range, in: path)!])
+            replacements[currentKey] = replacement
             output.append(replacement)
             
             if i == matchesToUserInput.count - 1 {
@@ -83,7 +100,7 @@ class Link: Object {
             previousMatch = match
         }
         
-        return output
+        return LinkInfo(fullPath: output, replacements: replacements)
     }
     
     private func getParam(forMatch match: NSTextCheckingResult, viewController: UIViewController) -> Observable<(NSTextCheckingResult,String)> {
@@ -106,4 +123,9 @@ class Link: Object {
         })
     }
     
+}
+
+struct LinkInfo {
+    let fullPath: String
+    let replacements: [String: String]
 }

@@ -1,0 +1,13 @@
+/pickem/${tournamentId}
+/survivor/${tournamentId}
+/contests/${contestId}
+/upcoming
+/games
+/live
+/recent
+/p/QuickPlayer/Replace
+/games/${fixtureListId}/contests/${contestId}
+/entry/${contestId}
+/friends-challenges/accept/${contestId}
+/p/MyEntryHistory
+/sbexport
