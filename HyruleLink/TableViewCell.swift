@@ -13,6 +13,7 @@ class TableViewCell: UITableViewCell {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .fill
+        stackView.distribution = .equalSpacing
         stackView.spacing = 8
         return stackView
     }()
@@ -34,9 +35,8 @@ class TableViewCell: UITableViewCell {
     }()
     
     private let useWithNewParamsButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .roundedRect)
         button.backgroundColor = .lightLightGray
-        button.layer.cornerRadius = 4
         button.setTitleColor(.black, for: .normal)
         button.setTitle("Use", for: .normal)
         return button
