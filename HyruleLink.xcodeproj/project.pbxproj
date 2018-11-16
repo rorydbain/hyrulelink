@@ -10,6 +10,8 @@
 		7EF82E6DB8AD3F736EC9E202 /* Pods_HyruleLink.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCC0CC635A26A3F55EC06D9F /* Pods_HyruleLink.framework */; };
 		E272363D219AAB77007141AE /* deeplinks.txt in Resources */ = {isa = PBXBuildFile; fileRef = E272363C219AAB77007141AE /* deeplinks.txt */; };
 		E272363F219AAB8F007141AE /* LinkPrefiller.swift in Sources */ = {isa = PBXBuildFile; fileRef = E272363E219AAB8F007141AE /* LinkPrefiller.swift */; };
+		E27237A9219E1717007141AE /* UseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27237A8219E1717007141AE /* UseCase.swift */; };
+		E27237AB219E175D007141AE /* UIAlertController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27237AA219E175D007141AE /* UIAlertController+Rx.swift */; };
 		E2BE4F27219A003000613695 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BE4F26219A003000613695 /* AppDelegate.swift */; };
 		E2BE4F29219A003000613695 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BE4F28219A003000613695 /* ViewController.swift */; };
 		E2BE4F2E219A003200613695 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2BE4F2D219A003200613695 /* Assets.xcassets */; };
@@ -24,6 +26,8 @@
 		BCC0CC635A26A3F55EC06D9F /* Pods_HyruleLink.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HyruleLink.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E272363C219AAB77007141AE /* deeplinks.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = deeplinks.txt; sourceTree = "<group>"; };
 		E272363E219AAB8F007141AE /* LinkPrefiller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkPrefiller.swift; sourceTree = "<group>"; };
+		E27237A8219E1717007141AE /* UseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseCase.swift; sourceTree = "<group>"; };
+		E27237AA219E175D007141AE /* UIAlertController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Rx.swift"; sourceTree = "<group>"; };
 		E2BE4F23219A003000613695 /* HyruleLink.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HyruleLink.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2BE4F26219A003000613695 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E2BE4F28219A003000613695 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -84,6 +88,8 @@
 				E2BE4F32219A003200613695 /* Info.plist */,
 				E2BE4F4C219A0A0200613695 /* Link.swift */,
 				E272363E219AAB8F007141AE /* LinkPrefiller.swift */,
+				E27237A8219E1717007141AE /* UseCase.swift */,
+				E27237AA219E175D007141AE /* UIAlertController+Rx.swift */,
 			);
 			path = HyruleLink;
 			sourceTree = "<group>";
@@ -228,6 +234,8 @@
 				E2BE4F4B219A05E700613695 /* TableViewCell.swift in Sources */,
 				E2BE4F29219A003000613695 /* ViewController.swift in Sources */,
 				E2BE4F27219A003000613695 /* AppDelegate.swift in Sources */,
+				E27237AB219E175D007141AE /* UIAlertController+Rx.swift in Sources */,
+				E27237A9219E1717007141AE /* UseCase.swift in Sources */,
 				E272363F219AAB8F007141AE /* LinkPrefiller.swift in Sources */,
 				E2BE4F4D219A0A0200613695 /* Link.swift in Sources */,
 			);

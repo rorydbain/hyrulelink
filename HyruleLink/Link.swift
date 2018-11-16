@@ -6,70 +6,77 @@ class LinkParam: Object {
     @objc dynamic var value = ""
 }
 
+class History: Object {
+    @objc dynamic var timestamp = Date()
+    @objc dynamic var parameterisedPath = ""
+    var parameters = List<LinkParam>()
+}
+
 class Link: Object {
     @objc dynamic var path = ""
     @objc dynamic var dateAdded = Date()
-    @objc dynamic var lastUsed = Date()
-    @objc dynamic var lastBuiltPath = ""
-    var lastParameters = List<LinkParam>()
-    
-    private let disposeBag = DisposeBag()
+    @objc dynamic var lastUse = Date()
+    let uses = List<History>()
     
     static var all: Results<Link> {
-        let descriptors: [SortDescriptor] = [SortDescriptor(keyPath: "lastUsed", ascending: false),
+        let descriptors: [SortDescriptor] = [SortDescriptor(keyPath: "lastUse", ascending: false),
                                              SortDescriptor(keyPath: "dateAdded", ascending: false)]
+        
         return try! Realm()
             .objects(self)
             .sorted(by: descriptors)
+        
     }
     
-    func didUse(withParams params: [String: String]?, fullPath: String) {
+    static func didUse(link: Link, withParams params: [String: String]?, fullPath: String) {
         let realm = try! Realm()
-        try! realm.write { [weak self] in
-            self?.lastUsed = Date()
-            self?.lastBuiltPath = fullPath
-            
+        try! realm.write {
+            let use = History()
+            use.parameterisedPath = fullPath
+            link.lastUse = Date()
             if let params = params {
-                self?.lastParameters.removeAll()
                 params.forEach { (key, value) in
                     let lp = LinkParam()
                     lp.key = key
                     lp.value = value
-                    self?.lastParameters.append(lp)
+                    use.parameters.append(lp)
                 }
+            }
+            link.uses.append(use)
+        }
+    }
+    
+    static func didUseLast(link: Link, use: History) {
+        let realm = try! Realm()
+        try! realm.write {
+            link.lastUse = Date()
+            if let existing = link.uses.index(of: use) {
+                link.uses.remove(at: existing)
+                link.uses.append(use)
             }
         }
     }
     
-    
     // weird but hey ho
-    func populateParameters(presentingAlertFrom viewController: UIViewController, completed: @escaping (LinkInfo) -> Void) {
+    func populateParameters(presentingAlertFrom viewController: UIViewController?) -> Observable<LinkInfo> {
         let paramRegex = "\\$\\{(.*?)\\}" // e.g. /pickem/${tournamentId}
         let matches = try! NSRegularExpression(pattern: paramRegex)
             .matches(in: path, options: [], range: NSRange(path.startIndex..., in: path))
         
-        Observable
+        return Observable
             .from(matches)
             .concatMap { [weak self] match -> Observable<(RegexReplacement)> in
                 guard
+                    let vc = viewController,
                     let path = self?.path,
-                    let strongSelf = self,
                     let swiftRange = Range(match.range, in: path) else { return Observable.empty() }
                 
-                let viewModel = TextFieldAlertViewModel(title: "Enter value for \(String(path[swiftRange]))", message: nil)
-                return strongSelf
-                    .show(textFieldAlertViewModel: viewModel, from: viewController)
+                return vc
+                    .show(textFieldAlertViewModel: .init(title: "Enter value for \(String(path[swiftRange]))", message: nil))
                     .map { textInput in RegexReplacement(checkingResult: match, replacement: textInput) }
             }
             .toArray()
-            .subscribe(onNext: { [weak self] matchesToUserInput in
-                guard let strongSelf = self else { return }
-                let output = strongSelf.replaceChunks(forValues: matchesToUserInput)
-                completed(output)
-            })
-            .disposed(by: disposeBag)
-        
-        
+            .map(replaceChunks)
     }
     
     private func replaceChunks(forValues matchesToUserInput: [RegexReplacement]) -> LinkInfo {
@@ -104,38 +111,6 @@ class Link: Object {
         }
         
         return LinkInfo(fullPath: output, replacements: replacements)
-    }
-    
-    struct TextFieldAlertViewModel {
-        let title: String?
-        let message: String?
-    }
-    
-    private func show(textFieldAlertViewModel: TextFieldAlertViewModel, from viewController: UIViewController) -> Observable<String> {
-        return Observable.create { observer in
-            let alert = UIAlertController(title: textFieldAlertViewModel.title,
-                                          message: textFieldAlertViewModel.message,
-                                          preferredStyle: .alert)
-            
-            alert.addAction(.init(title: "Cancel",
-                                  style: .cancel,
-                                  handler: { _ in
-                                    observer.onCompleted() }))
-            
-            alert.addAction(.init(title: "Submit",
-                                  style: .default,
-                                  handler: { _ in
-                                    observer.onNext(alert.textFields?.first?.text ?? "")
-                                    observer.onCompleted() }))
-            
-            alert.addTextField(configurationHandler: { _ in })
-            
-            viewController.present(alert, animated: true, completion: nil)
-            
-            return Disposables.create {
-                alert.dismiss(animated: true, completion: nil)
-            }
-        }
     }
     
 }

@@ -3,8 +3,8 @@ import RxCocoa
 import RxSwift
 
 protocol TableViewCellDelegate: class {
-    func didTapUseLast(link: Link)
-    func didTapUseNew(link: Link)
+    var didTapNew: AnyObserver<Link> { get }
+    var didTapLast: AnyObserver<Link> { get }
 }
 
 class TableViewCell: UITableViewCell {
@@ -78,12 +78,12 @@ class TableViewCell: UITableViewCell {
         
         useLastParamsButton.rx.tap.subscribe(onNext: { [weak self] in
             guard let strongSelf = self else { return }
-            strongSelf.delegate?.didTapUseLast(link: strongSelf.link)
+            strongSelf.delegate?.didTapLast.onNext(strongSelf.link)
         }).disposed(by: disposeBag)
         
         useWithNewParamsButton.rx.tap.subscribe(onNext: { [weak self] in
             guard let strongSelf = self else { return }
-            strongSelf.delegate?.didTapUseNew(link: strongSelf.link)
+            strongSelf.delegate?.didTapNew.onNext(strongSelf.link)
         }).disposed(by: disposeBag)
     }
     
@@ -94,8 +94,8 @@ class TableViewCell: UITableViewCell {
     func didUpdateLink() {
         pathLabel.text = link.path
         
-        if !link.lastParameters.isEmpty {
-            useLastParamsButton.setTitle("Use Last - \(link.lastParameters.map { "\($0.key): \($0.value)" }.joined(separator: ", "))", for: .normal)
+        if let lastUse = link.uses.last {
+            useLastParamsButton.setTitle("Use Last - \(lastUse.parameters.map { "\($0.key): \($0.value)" }.joined(separator: ", "))", for: .normal)
             useLastParamsButton.isHidden = false
             useLastParamsButton.sizeToFit()
         } else {
