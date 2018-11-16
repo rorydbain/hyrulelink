@@ -14,7 +14,7 @@ struct UseCase {
         let showError: Observable<OkAlert>
     }
     
-    static func makeStreams(inputs: Inputs, viewController: UIViewController?, disposeBag: DisposeBag) -> Outputs {
+    static func makeStreams(inputs: Inputs, viewController: ViewControllerPresenting?, disposeBag: DisposeBag) -> Outputs {
         
         let showError = PublishSubject<OkAlert>()
         
@@ -38,7 +38,7 @@ struct UseCase {
         let baseUrl = "https://www.fanduel.com"
         let newPathToOpen = inputs
             .didTapUseNew
-            .flatMap { link in link.populateParameters(presentingAlertFrom: viewController)
+            .flatMap { link in UseCase.populateParameters(for: link, presentingAlertFrom: viewController)
                 .map { params -> String in
                     if URL(string: [baseUrl, params.fullPath].joined()) != nil {
                         Link.didUse(link: link, withParams: params.replacements, fullPath: params.fullPath)
@@ -69,30 +69,71 @@ struct UseCase {
         return Outputs(showError: showError.asObservable())
     }
     
+    // weird but hey ho
+    static func populateParameters(for link: Link, presentingAlertFrom viewController: ViewControllerPresenting?) -> Observable<LinkInfo> {
+        let paramRegex = "\\$\\{(.*?)\\}" // e.g. /pickem/${tournamentId}
+        let matches = try! NSRegularExpression(pattern: paramRegex)
+            .matches(in: link.path, options: [], range: NSRange(link.path.startIndex..., in: link.path))
+        
+        return Observable
+            .from(matches)
+            .concatMap { match -> Observable<(RegexReplacement)> in
+                let path = link.path
+                guard
+                    let vc = viewController,
+                    let swiftRange = Range(match.range, in: path) else { return Observable.empty() }
+                
+                return vc
+                    .show(textFieldAlertViewModel: .init(title: "Enter value for \(String(path[swiftRange]))", message: nil))
+                    .map { textInput in RegexReplacement(checkingResult: match, replacement: textInput) }
+            }
+            .toArray()
+            .map({ matches in self.replaceChunks(for: link, matchesToUserInput: matches) })
+    }
+    
+    static private func replaceChunks(for link: Link, matchesToUserInput: [RegexReplacement]) -> LinkInfo {
+        let path = link.path
+        guard !matchesToUserInput.isEmpty else { return LinkInfo(fullPath: path, replacements: [:]) }
+        
+        var output = ""
+        var previousMatch: NSTextCheckingResult?
+        var replacements = [String: String]()
+        for (i, regexReplacement) in matchesToUserInput.enumerated() {
+            let (match, replacement) = (regexReplacement.checkingResult, regexReplacement.replacement)
+            let currentMatchRange = Range(match.range, in: path)!
+            
+            if let previousMatch = previousMatch {
+                let previousMatchRange = Range(previousMatch.range, in: path)!
+                let chunk = path[previousMatchRange.upperBound..<currentMatchRange.lowerBound]
+                output.append(String(chunk))
+            } else {
+                let chunk = path[path.startIndex..<currentMatchRange.lowerBound]
+                output.append(String(chunk))
+            }
+            
+            let currentKey = String(path[Range(match.range, in: path)!])
+            replacements[currentKey] = replacement
+            output.append(replacement)
+            
+            if i == matchesToUserInput.count - 1 {
+                let chunk = path[currentMatchRange.upperBound...]
+                output.append(String(chunk))
+            }
+            
+            previousMatch = match
+        }
+        
+        return LinkInfo(fullPath: output, replacements: replacements)
+    }
+    
 }
 
+struct LinkInfo {
+    let fullPath: String
+    let replacements: [String: String]
+}
 
-//func didTapUseNew(link: Link) {
-//    link.populateParameters(presentingAlertFrom: self) { [weak self] linkInfo in
-//        self?.open(path: linkInfo.fullPath, completion: {
-//            link.didUse(withParams: linkInfo.replacements, fullPath: linkInfo.fullPath)
-//        })
-//    }
-//}
-//
-//func didTapUseLast(link: Link) {
-//    self.open(path: link.lastBuiltPath) {
-//        link.didUse(withParams: nil, fullPath: link.lastBuiltPath)
-//    }
-//}
-//
-//private func open(path: String, completion: @escaping () -> Void) {
-//    let urlString = "https://www.fanduel.com\(path)"
-//    if let url = URL(string: urlString) {
-//        UIApplication.shared.open(url, options: [:], completionHandler: { _ in
-//            completion()
-//        })
-//    } else {
-//        //            showError(title: "Failed to make url", message: "Could not make url with text '\(urlString)'")
-//    }
-//}
+struct RegexReplacement {
+    let checkingResult: NSTextCheckingResult
+    let replacement: String
+}

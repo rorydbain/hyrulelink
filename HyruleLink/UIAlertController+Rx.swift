@@ -1,12 +1,18 @@
 import RxSwift
 import UIKit
 
-extension UIViewController {
+protocol ViewControllerPresenting: class {
+    func present(viewController: UIViewController)
+}
 
-    struct TextFieldAlertViewModel {
-        let title: String?
-        let message: String?
-    }
+struct TextFieldAlertViewModel {
+    let title: String?
+    let message: String?
+}
+
+
+extension ViewControllerPresenting {
+
     
     func show(textFieldAlertViewModel: TextFieldAlertViewModel) -> Observable<String> {
         return Observable.create { [weak self] observer in
@@ -27,7 +33,7 @@ extension UIViewController {
             
             alert.addTextField(configurationHandler: { _ in })
             
-            self?.present(alert, animated: true, completion: nil)
+            self?.present(viewController: alert)
             
             return Disposables.create {
                 alert.dismiss(animated: true, completion: nil)

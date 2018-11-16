@@ -4,8 +4,12 @@ import RxRealm
 import RxSwift
 import RxCocoa
 
-class ViewController: UITableViewController, TableViewCellDelegate {
+class ViewController: UITableViewController, TableViewCellDelegate, ViewControllerPresenting {
     
+    private let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: nil, action: nil)
+    private let cellReuseIdentifier = "cell"
+    private let disposeBag = DisposeBag()
+    private var links = Link.all
     private let didTapNewSubject = PublishSubject<Link>()
     private let didTapUseLastSubject = PublishSubject<Link>()
     
@@ -20,12 +24,6 @@ class ViewController: UITableViewController, TableViewCellDelegate {
             return didTapUseLastSubject.asObserver()
         }
     }
-    
-    private let cellReuseIdentifier = "cell"
-    private let disposeBag = DisposeBag()
-    private var links = Link.all
-    
-    private let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: nil, action: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,8 +87,11 @@ class ViewController: UITableViewController, TableViewCellDelegate {
         tableView.endUpdates()
     }
     
+    func present(viewController: UIViewController) {
+        present(viewController, animated: true, completion: nil)
+    }
+    
 }
-
 
 struct OkAlert {
     let title: String

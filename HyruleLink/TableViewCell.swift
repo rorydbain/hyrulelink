@@ -30,6 +30,7 @@ class TableViewCell: UITableViewCell {
         button.backgroundColor = .lightLightGray
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.numberOfLines = 0
+        button.layer.cornerRadius = 4
         button.titleLabel?.font = UIFont.systemFont(ofSize: 11)
         return button
     }()
@@ -39,6 +40,7 @@ class TableViewCell: UITableViewCell {
         button.backgroundColor = .lightLightGray
         button.setTitleColor(.black, for: .normal)
         button.setTitle("Use", for: .normal)
+        button.layer.cornerRadius = 4
         return button
     }()
     
